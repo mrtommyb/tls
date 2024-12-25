@@ -8,7 +8,10 @@ from functools import partial
 from tqdm import tqdm
 
 # TLS parts
-from transitleastsquares.results import transitleastsquaresresults, transitleastsquaresresults_limited
+from transitleastsquares.results import (
+    transitleastsquaresresults,
+    transitleastsquaresresults_limited,
+)
 import transitleastsquares.tls_constants as tls_constants
 from transitleastsquares.stats import (
     FAP,
@@ -53,7 +56,7 @@ class transitleastsquares(object):
         self, kwargs = validate_args(self, kwargs)
 
         if self.verbose:
-            print(tls_constants.TLS_VERSION)   
+            print(tls_constants.TLS_VERSION)
 
         periods = period_grid(
             R_star=self.R_star,
@@ -83,7 +86,7 @@ class transitleastsquares(object):
             w=self.w,
             u=self.u,
             limb_dark=self.limb_dark,
-            verbose=self.verbose
+            verbose=self.verbose,
         )
 
         if self.verbose:
@@ -222,7 +225,7 @@ class transitleastsquares(object):
                 period=period,
                 T0_fit_margin=self.T0_fit_margin,
                 show_progress_bar=self.show_progress_bar,
-                verbose=self.verbose
+                verbose=self.verbose,
             )
             transit_times = all_transit_times(T0, self.t, period)
 
@@ -232,16 +235,9 @@ class transitleastsquares(object):
             duration = transit_duration_in_days
 
         return transitleastsquaresresults_limited(
-            keys = ["SDE", "period", "T0", "duration", "depth"],
-            values = [SDE,
-            period,
-            T0,
-            duration,
-            depth],
-        )              
-
-
-
+            keys=["SDE", "period", "T0", "duration", "depth"],
+            values=[SDE, period, T0, duration, depth],
+        )
 
     def power(self, **kwargs):
         """Compute the periodogram for a set of user-defined parameters"""
@@ -249,7 +245,6 @@ class transitleastsquares(object):
 
         if self.verbose:
             print(tls_constants.TLS_VERSION)
-        
 
         periods = period_grid(
             R_star=self.R_star,
@@ -279,7 +274,7 @@ class transitleastsquares(object):
             w=self.w,
             u=self.u,
             limb_dark=self.limb_dark,
-            verbose=self.verbose
+            verbose=self.verbose,
         )
 
         if self.verbose:
@@ -474,7 +469,7 @@ class transitleastsquares(object):
                 period=period,
                 T0_fit_margin=self.T0_fit_margin,
                 show_progress_bar=self.show_progress_bar,
-                verbose=self.verbose
+                verbose=self.verbose,
             )
             transit_times = all_transit_times(T0, self.t, period)
 
@@ -536,9 +531,17 @@ class transitleastsquares(object):
             model_lightcurve_model, model_lightcurve_time = model_lightcurve(
                 transit_times, period, self.t, model_transit_single
             )
-            depth_mean_odd, depth_mean_even, depth_mean_odd_std, depth_mean_even_std, all_flux_intransit_odd, all_flux_intransit_even, per_transit_count, transit_depths, transit_depths_uncertainties = intransit_stats(
-                self.t, self.y, transit_times, transit_duration_in_days
-            )
+            (
+                depth_mean_odd,
+                depth_mean_even,
+                depth_mean_odd_std,
+                depth_mean_even_std,
+                all_flux_intransit_odd,
+                all_flux_intransit_even,
+                per_transit_count,
+                transit_depths,
+                transit_depths_uncertainties,
+            ) = intransit_stats(self.t, self.y, transit_times, transit_duration_in_days)
             all_flux_intransit = numpy.concatenate(
                 [all_flux_intransit_odd, all_flux_intransit_even]
             )
