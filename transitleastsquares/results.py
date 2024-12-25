@@ -59,3 +59,27 @@ class transitleastsquaresresults(dict):
 
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+
+
+class transitleastsquaresresults_limited(transitleastsquaresresults):
+    """A subclass of transitleastsquaresresults with subset parameter support"""
+
+    def __init__(self, keys, *args):
+        """
+        Initialize with a subset of keys and corresponding values.
+
+        Args:
+            keys (list of str): The subset of keys to include in the results.
+            *args: The values corresponding to the specified keys.
+        """
+        # Validate keys and values
+        if len(keys) != len(args):
+            raise ValueError("Number of keys and values must match.")
+        
+        # Call the parent class constructor with filtered arguments
+        super().__init__(*args)  # Initialize with full data structure
+        
+        # Retain only the specified keys in the dictionary
+        for key in list(self.keys()):  # Iterate over all keys
+            if key not in keys:
+                del self[key]
