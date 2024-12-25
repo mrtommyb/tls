@@ -234,9 +234,11 @@ class transitleastsquares(object):
             )
             duration = transit_duration_in_days
 
+        keys = ["SDE", "period", "T0", "duration", "depth"]
+        values = [SDE, period, T0, duration, depth]
         return transitleastsquaresresults_limited(
-            keys=["SDE", "period", "T0", "duration", "depth"],
-            values=[SDE, period, T0, duration, depth],
+            keys,
+            *values,
         )
 
     def power(self, **kwargs):
