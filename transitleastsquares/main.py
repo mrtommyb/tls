@@ -8,7 +8,7 @@ from functools import partial
 from tqdm import tqdm
 
 # TLS parts
-from transitleastsquares.results import transitleastsquaresresults
+from transitleastsquares.results import transitleastsquaresresults, transitleastsquaresresults_limited
 import transitleastsquares.tls_constants as tls_constants
 from transitleastsquares.stats import (
     FAP,
@@ -231,12 +231,13 @@ class transitleastsquares(object):
             )
             duration = transit_duration_in_days
 
-        return transitleastsquaresresults(
-            SDE,
+        return transitleastsquaresresults_limited(
+            keys = ["SDE", "period", "T0", "duration", "depth"],
+            values = [SDE,
             period,
             T0,
             duration,
-            depth,
+            depth],
         )              
 
 
